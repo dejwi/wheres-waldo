@@ -1,2 +1,2 @@
-#WEHRE'S WALDO GAME
+# WEHRE'S WALDO GAME
 made with react & firebase
