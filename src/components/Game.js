@@ -1,12 +1,16 @@
-import styled from "styled-components";
 import {useState, useEffect} from "react";
 import {firestore} from "./firebase";
 import { useParams } from "react-router-dom";
-import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
+import FoundPopup from "./FoundPopup";
 
 function Game(){
     const params = useParams();
     const [data, setData] = useState({});
+    const [time,setTime] = useState(0.00);
+
+    const [popup,setPopup] = useState(false);
+    const [intervalov,setIntervalov] = useState(false);
+    // ^ need to fix problem when interval stop and goes on again
 
     useEffect(() => {
         const query = firestore.collection('waldos')
@@ -14,17 +18,16 @@ function Game(){
         query.get().then(snap => snap.docs[0].data()).then(dat => setData(dat));
     },[]);
 
-    const [time,setTime] = useState(0.00);
+
     let inv;
-    useEffect(() => {
+    useEffect(()=>{
         inv = setInterval(()=>{
             setTime( Math.round((parseFloat('0.1')
                 + parseFloat(time))*100)/100);
         },100);
 
-        return ()=> {
-            clearInterval(inv);
-        };
+        if(intervalov) clearInterval(inv);
+        return ()=> {clearInterval(inv);};
     });
 
     const logClick = (e) =>{
@@ -34,8 +37,9 @@ function Game(){
 
         if (pos.x >= data.posX && pos.x <= data.posX + data.width){
             if (pos.y >= data.posY && pos.y <= data.posY + data.height){
-                console.log('found');
                 clearInterval(inv);
+                setIntervalov(true);
+                setPopup(true);
             }
         }
     };
@@ -48,16 +52,18 @@ function Game(){
             name: 'bruh'
         });
     };
-    return (<div>
+    return (<div className="game">
         <h1>Find Waldo</h1>
-        <span>Time: {time}</span>
+        <h5>Be fast!</h5>
+        <span>{time}s</span>
 
-        <div>
-            <img src={data.imageUrl} alt='find waldo' onClick={logClick}/>
-            <button onClick={addLeaderboard} >Add to leaderboard</button>
-        </div>
-
-
+        <img src={data.imageUrl} alt='find waldo' onClick={logClick}/>
+        {/*<button onClick={addLeaderboard} >Add to leaderboard</button>*/}
+        {popup ? (
+            <div className="popupCont">
+                <FoundPopup time={time} path={data.name}/>
+            </div>
+        ) : null}
     </div>);
 }
 export default Game;
