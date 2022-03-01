@@ -8,7 +8,7 @@ const Mcont = styled.div`
   justify-content: center;
   align-items: center;
   background: rgb(255, 255, 255);
-  padding: 1rem 1.4rem;
+  padding: 1rem 1.4rem 0.5rem 1.4rem;
   border-radius: 8px;
 `;
 const Span = styled.span`
