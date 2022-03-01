@@ -29,16 +29,53 @@ html,body,#root{
   width: 100%;
   height: 80vh;
   @include flex-col-center;
+  .maps{
+    //display: flex;
+    //width: 100%;
+    //justify-content: center;
+    //gap: min(1%,1rem)
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    & > a{
+      position: relative;
+      padding: 0.5rem;
+      padding-bottom: 0.1rem;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      transition: 0.2s ease-in-out;
+
+      &:hover, &:focus{
+        transform: scale(1.1) rotate(4deg);
+        filter: brightness(90%);
+      }
+    }
+    .licon{
+      position: absolute;
+      right: 0.5rem;
+      bottom: 0.5rem;
+      cursor: pointer;
+      padding: 0.2rem 0.2rem 0 0.2rem;
+      border-radius: 7px;
+      transition: 0.2s ease-in-out;
+      &:hover, &:focus{
+        background: rgba(255, 255, 255, 0.57);
+
+      }
+    }
+  }
 }
 .game{
   @include flex-col-center;
   position: relative;
+  height: auto;
   .popupCont{
     left: 0;
     top: 0;
-    position: absolute;
+    position: fixed;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
